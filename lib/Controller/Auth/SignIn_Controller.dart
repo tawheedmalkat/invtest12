@@ -11,8 +11,8 @@ import 'package:invoportapp/UI/screens/UserDataScreen.dart';
 
 abstract class SignInController extends GetxController {
   signIn(BuildContext context);
-  String selectedValue = 'Your Account';
 
+  String selectedValue = 'Your Account';
 }
 
 class SignInControllerImp extends SignInController {
@@ -23,8 +23,6 @@ class SignInControllerImp extends SignInController {
   late BuildContext context;
   RxBool isLoading = false.obs;
   RxBool obscureText = true.obs;
-
-
 
   void updateObscure() {
     obscureText.value = !obscureText.value;
@@ -37,34 +35,36 @@ class SignInControllerImp extends SignInController {
         passwordController.text.isNotEmpty;
   }
 
-
   @override
-
-  signIn(BuildContext context) async {
+  Future<void> signIn(BuildContext context) async {
     isLoading.value = true;
     update();
 
-    if (validateFields()) {
-      var client = http.Client();
-      var url = Uri.parse(ApiLink.Login);
+    var client = http.Client();
+    var url = Uri.parse(ApiLink.Login);
+
+    try {
       var response = await client.post(
         url,
         body: {
-          'password': "54641874",
-          'email': 'tawhidmalka0@gmail.com',
-          'account': 'invoport',
+          'password': passwordController.text,
+          'email':emailController.text,
+          'account': accountController.text,
         },
       );
 
-      var jsonResponse = json.decode(response.body);
-
-      if (jsonResponse['message'] == 'Login successfully') {
-        // Access the user data
-        var userData = jsonResponse[0][0];
-        print(userData);
-        UserModel user = UserModel.fromJson(userData);
-        print('Done');
-
+      var responseData = json.decode(response.body);
+      if (responseData is List && responseData.isNotEmpty) {
+        List<Map<String, dynamic>> listOfMaps =
+            List<Map<String, dynamic>>.from(responseData[0]);
+        List<UserModel> listOfUserModels =
+            listOfMaps.map((map) => UserModel.fromJson(map)).toList();
+        listOfUserModels.forEach((userModel) {
+          print(
+              'Entity ID: ${userModel.entityId}, Entity Name: ${userModel.entityName}');
+        });
+        isLoading.value = false;
+        update();
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.infoReverse,
@@ -105,7 +105,7 @@ class SignInControllerImp extends SignInController {
                     TextButton(
                       onPressed: () {
                         // Get.offNamed(AppRoute.home);
-                        Get.to(UserDataScreen());
+                        Get.to(UserDataScreen(userModels: listOfUserModels,));
                       },
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -120,27 +120,21 @@ class SignInControllerImp extends SignInController {
             ),
           ),
         ).show();
-      } else {
+      }
+      else if (responseData != List){
+        isLoading.value = false;
+        update();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(jsonResponse['message']),
+            content: Text('Invalid data'),
             duration: const Duration(seconds: 2),
           ),
         );
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+    } finally {
+      client.close();
     }
-
-    isLoading.value = false;
-    update();
   }
-
 
   @override
   void onInit() {
@@ -158,4 +152,3 @@ class SignInControllerImp extends SignInController {
     super.dispose();
   }
 }
-

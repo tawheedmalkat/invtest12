@@ -171,6 +171,9 @@
 //   }
 //
 // }
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 class UserModel {
   int? entityId;
   String? entityName;
@@ -183,9 +186,10 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['entity_id'] = this.entityId;
     data['entity_name'] = this.entityName;
     return data;
   }
 }
+
