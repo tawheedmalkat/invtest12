@@ -11,8 +11,6 @@ import 'package:invoportapp/UI/screens/UserDataScreen.dart';
 
 abstract class SignInController extends GetxController {
   signIn(BuildContext context);
-
-  String selectedValue = 'Your Account';
 }
 
 class SignInControllerImp extends SignInController {
