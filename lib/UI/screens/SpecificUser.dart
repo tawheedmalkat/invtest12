@@ -87,7 +87,7 @@ class UserDetailsScreen extends StatelessWidget {
                 label: 'Submit',
                 onPressed: () async {
                   String selectedId = '${userModel.entityId}';
-                  await controller.postData(selectedId, context);
+                 // await controller.postData(selectedId, context);
                 },
                 isLoading: controller.isLoading(),
               ),

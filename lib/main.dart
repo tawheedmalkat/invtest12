@@ -5,6 +5,9 @@ import 'package:invoportapp/routpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
+import 'UI/screens/Home.dart';
+import 'UI/screens/UserDataScreen.dart';
+
 SharedPreferences? sharedPref;
 void main()async {
 
@@ -20,7 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      getPages: routes,
+       getPages: routes,
+      home: UserDataScreen(userModels: [],),
     );
   }
 }
