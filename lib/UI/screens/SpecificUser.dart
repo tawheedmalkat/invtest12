@@ -4,6 +4,7 @@ import '../../Constance/imgaeasset.dart';
 import '../../Controller/Auth/SignIn_Controller.dart';
 import '../../Controller/Auth/post-data.dart';
 import '../../Model/UserModel.dart';
+import '../../main.dart';
 import '../widgets/CustomLoginButton.dart';
 
 class UserDetailsScreen extends StatelessWidget {
@@ -87,7 +88,7 @@ class UserDetailsScreen extends StatelessWidget {
                 label: 'Submit',
                 onPressed: () async {
                   String selectedId = '${userModel.entityId}';
-                 // await controller.postData(selectedId, context);
+                  await controller.postData(selectedId,'${sharedPref?.getString('token')}', context);
                 },
                 isLoading: controller.isLoading(),
               ),

@@ -81,8 +81,9 @@ class SignInControllerImp extends SignInController {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async{
                           sharedPref?.setString('token', responseData['token']);
+                          await postData('1', 'kgrelg443GG^%', context);
                           Get.offNamed(AppRoute.home);
                         },
                         style: ElevatedButton.styleFrom(
@@ -95,8 +96,9 @@ class SignInControllerImp extends SignInController {
                       ),
                       SizedBox(width: 20),
                       TextButton(
-                        onPressed: () {
-                          //Get.to(UserDataScreen(userModels: listOfUserModels));
+                        onPressed: () async{
+                          sharedPref?.setString('token', responseData['token']);
+                          await postData('1', 'kgrelg443GG^%', context);
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -136,9 +138,55 @@ class SignInControllerImp extends SignInController {
     }
   }
 
+  @override
+  Future<void> postData(String id, String token, BuildContext context) async {
+    isLoading.value = true;
+    update();
+
+    var client = http.Client();
+    var url = Uri.parse('https://dev.invoport.lu/api/interface.php');
+
+    try {
+      var response = await client.post(
+        url,
+        body: {
+          'investor_id': id,
+          'token': token,
+        },
+      );
+
+      var responseData = json.decode(response.body);
+
+      if (responseData is List && responseData.isNotEmpty) {
+        List<Map<String, dynamic>> listOfMaps = List<Map<String, dynamic>>.from(responseData[0]);
+        List<UserModel> listOfUserModels = listOfMaps.map((map) => UserModel.fromJson(map)).toList();
+        listOfUserModels.forEach((userModel) {
+          print('Entity ID: ${userModel.entityId}, Entity Name: ${userModel.entityName}');
+          Get.to(UserDataScreen(userModels: listOfUserModels));
+        });
+
+        isLoading.value = false;
+        update();
+        print('true');
+      } else if (responseData != List) {
+        isLoading.value = false;
+        update();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid data'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      client.close();
+    }
+  }
+
 
   @override
   void onInit() {
+    postData;
     emailController = TextEditingController();
     passwordController = TextEditingController();
     accountController = TextEditingController();
@@ -147,6 +195,7 @@ class SignInControllerImp extends SignInController {
 
   @override
   void dispose() {
+    postData;
     emailController.dispose();
     passwordController.dispose();
     accountController.dispose();

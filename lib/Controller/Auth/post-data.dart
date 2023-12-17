@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Model/UserModel.dart';
+import '../../UI/screens/UserDataScreen.dart';
 
 abstract class PostDataController extends GetxController {
   postData(String id, String token, BuildContext context);
@@ -40,6 +41,7 @@ class PostDataControllerImp extends PostDataController {
         listOfUserModels.forEach((userModel) {
           print('Entity ID: ${userModel.entityId}, Entity Name: ${userModel.entityName}');
         });
+
         isLoading.value = false;
         update();
         print('true');

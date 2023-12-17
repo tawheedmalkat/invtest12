@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 import 'UI/screens/Home.dart';
-import 'UI/screens/UserDataScreen.dart';
 
 SharedPreferences? sharedPref;
 void main()async {
@@ -24,7 +23,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
        getPages: routes,
-      home: UserDataScreen(userModels: [],),
     );
   }
 }

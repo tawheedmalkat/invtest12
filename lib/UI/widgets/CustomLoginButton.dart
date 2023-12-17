@@ -16,7 +16,7 @@ class CustomLoginButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.01, vertical: 10),
       child: isLoading
-          ? CircularProgressIndicator() // Show loading indicator
+          ? Center(child: CircularProgressIndicator()) // Show loading indicator
           : ElevatedButton.icon(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(

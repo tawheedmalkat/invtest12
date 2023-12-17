@@ -28,10 +28,12 @@ class UserDataScreen extends StatelessWidget {
                 onChanged: (String? newValue) {
                   if (newValue != null && newValue != 'Select an investment') {
                     UserModel selectedUserModel = userModels.firstWhere(
-                        (userModel) => userModel.entityName == newValue);
+                            (userModel) => userModel.entityName == newValue,
+                        orElse: () => UserModel(entityId: 0, entityName: '')); // Replace with default values
                     Get.to(UserDetailsScreen(userModel: selectedUserModel));
                   }
                 },
+
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -51,14 +53,15 @@ class UserDataScreen extends StatelessWidget {
                     .toList(),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.60),
-              CustomLoginButton(
-                label: 'Submit',
-                onPressed: () async {
-                  String selectedId = '0';
-                  await controller.postData(selectedId,'kgrelg443GG^%',context);
-                },
-                isLoading: controller.isLoading(),
-              ),
+              // CustomLoginButton(
+              //   label: 'Submit',
+              //   onPressed: () async {
+              //     print('${sharedPref?.getString('token')}');
+              //     String selectedId = '0';
+              //     await controller.postData(selectedId,'${sharedPref?.getString('token')}',context);
+              //   },
+              //   isLoading: controller.isLoading(),
+              // ),
             ],
           ),
         ),
