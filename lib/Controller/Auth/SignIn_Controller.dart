@@ -84,7 +84,7 @@ class SignInControllerImp extends SignInController {
                         onPressed: () async{
                           sharedPref?.setString('token', responseData['token']);
                           await postData('1', 'kgrelg443GG^%', context);
-                          Get.offNamed(AppRoute.home);
+                          Get.offNamed(AppRoute.pdf);
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,

@@ -47,38 +47,5 @@ class PdfDataControllerImp extends PdfDataController {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Get.put((PdfDataControllerImp()));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('PDF Viewer'),
-      ),
-      body: Center(
-        child: Obx(
-              () => isLoading.value
-              ? CircularProgressIndicator()
-              : PDFView(
-            filePath: "https://dev.invoport.lu/ftp/First-structure.pdf",
-            pdfData: _pdfBytes,
-            enableSwipe: true,
-            swipeHorizontal: false,
-            autoSpacing: false,
-            pageSnap: true,
-            onRender: (_pages) {
-              isLoading.value = false;
-              update();
-            },
-            onError: (error) {
-              print(error);
-            },
-            onPageError: (page, error) {
-              print('$page: ${error.toString()}');
-            },
-            onViewCreated: (PDFViewController pdfViewController) {},
-          ),
-        ),
-      ),
-    );
-  }
+
 }
