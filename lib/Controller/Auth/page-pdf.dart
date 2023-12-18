@@ -1,88 +1,82 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class PDFViewerPage extends StatefulWidget {
-  @override
-  _PDFViewerPageState createState() => _PDFViewerPageState();
+abstract class PdfDataController extends GetxController {
+  Future<void> pdfDataController(String id, String token);
 }
 
-class _PDFViewerPageState extends State<PDFViewerPage> {
-  late PDFViewController _pdfViewController;
+class PdfDataControllerImp extends PdfDataController {
   int _pageNumber = 1;
-  bool _isLoading = true;
+  RxBool isLoading = false.obs;
   late Uint8List _pdfBytes;
 
   @override
-  void initState() {
-    super.initState();
-    _loadTokenAndPDF();
-  }
+  Future<void> pdfDataController(String id, String token) async {
+    isLoading.value = true;
+    update();
 
-  Future<void> _loadTokenAndPDF() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    token = prefs.getString('token') ?? '';
 
-    if (token != null) {
-      final response = await http.get(
+    var client = http.Client();
 
-        Uri.parse("https://dev.invoport.lu/ftp/First-structure.pdf"),
+
+    try {
+      final response = await client.get(
+        Uri.parse('https://dev.invoport.lu/api/pdf.php'),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        setState(() {
-          _pdfBytes = response.bodyBytes;
-          _isLoading = false;
-        });
+        _pdfBytes = response.bodyBytes;
+        isLoading.value = false;
+        update();
       } else {
         throw Exception('Failed to load PDF');
       }
-    } else {
-      // Handle the case where the authentication token is not available.
+    } finally {
+      client.close();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Get.put((PdfDataControllerImp()));
     return Scaffold(
       appBar: AppBar(
         title: Text('PDF Viewer'),
       ),
       body: Center(
-        child: _isLoading
-            ? CircularProgressIndicator()
-            : PDFView(
-          filePath: '',
-          pdfData: _pdfBytes,
-
-          enableSwipe: true,
-          swipeHorizontal: false,
-          autoSpacing: false,
-          pageSnap: true,
-          onRender: (_pages) {
-            setState(() {
-              _isLoading = false;
-            });
-          },
-          onError: (error) {
-            print(error);
-          },
-          onPageError: (page, error) {
-            print('$page: ${error.toString()}');
-          },
-          onViewCreated: (PDFViewController pdfViewController) {
-            setState(() {
-              _pdfViewController = pdfViewController;
-            });
-          },
-
+        child: Obx(
+              () => isLoading.value
+              ? CircularProgressIndicator()
+              : PDFView(
+            filePath: "https://dev.invoport.lu/ftp/First-structure.pdf",
+            pdfData: _pdfBytes,
+            enableSwipe: true,
+            swipeHorizontal: false,
+            autoSpacing: false,
+            pageSnap: true,
+            onRender: (_pages) {
+              isLoading.value = false;
+              update();
+            },
+            onError: (error) {
+              print(error);
+            },
+            onPageError: (page, error) {
+              print('$page: ${error.toString()}');
+            },
+            onViewCreated: (PDFViewController pdfViewController) {},
+          ),
         ),
       ),
     );
