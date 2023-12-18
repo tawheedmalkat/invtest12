@@ -1,45 +1,76 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http ;
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-//from new-test
-Future<void> postData(String id, BuildContext context) async {
-  var apiUrl = Uri.parse('https://dev.invoport.lu/api/interface2.php?account');
-  var data = {
-    'investor_id': id,
-  };
+import 'package:get/get.dart';
 
-  try {
-    var response = await http.post(
-      apiUrl,
-      body: data,
-    );
+import '../../Model/UserModel.dart';
+import '../../UI/screens/UserDataScreen.dart';
 
-    var jsonResponse = json.decode(response.body);
+abstract class PostDataController extends GetxController {
+  postData(String id, String token, BuildContext context);
+}
 
-    if (jsonResponse['message'] == "Valid investor Account!") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonResponse['message']),
-          duration: const Duration(seconds: 2),
-        ),
+class PostDataControllerImp extends PostDataController {
+  late BuildContext context;
+  RxBool isLoading = false.obs;
+  String selectedValue = 'Select an investment';
+
+  @override
+  Future<void> postData(String id, String token, BuildContext context) async {
+    isLoading.value = true;
+    update();
+
+    var client = http.Client();
+    var url = Uri.parse('https://dev.invoport.lu/api/interface.php');
+
+    try {
+      var response = await client.post(
+        url,
+        body: {
+          'investor_id': id,
+          'token': token,
+        },
       );
-      print(jsonResponse);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(' ${response.body}'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      print(" ${response.body}");
+
+      var responseData = json.decode(response.body);
+
+      if (responseData is List && responseData.isNotEmpty) {
+        List<Map<String, dynamic>> listOfMaps = List<Map<String, dynamic>>.from(responseData[0]);
+        List<UserModel> listOfUserModels = listOfMaps.map((map) => UserModel.fromJson(map)).toList();
+        listOfUserModels.forEach((userModel) {
+          print('Entity ID: ${userModel.entityId}, Entity Name: ${userModel.entityName}');
+        });
+
+        isLoading.value = false;
+        update();
+        print('true');
+      } else if (responseData != List) {
+        isLoading.value = false;
+        update();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid data'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      client.close();
     }
-  } catch (error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error: $error'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-    print("Error: $error");
+  }
+
+
+
+  @override
+  void onInit() {
+    postData;
+    super.onInit();
+  }
+
+  @override
+  void dispose() {
+    postData;
+    super.dispose();
   }
 }

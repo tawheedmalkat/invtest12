@@ -5,17 +5,18 @@ import '../../constance/imgaeasset.dart';
 class CustomLoginButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
+  final String label;
 
   const CustomLoginButton(
-      {super.key, required this.onPressed, required this.isLoading});
+      {super.key, required this.onPressed, required this.isLoading,required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05, vertical: 10),
+          horizontal: MediaQuery.of(context).size.width * 0.01, vertical: 10),
       child: isLoading
-          ? CircularProgressIndicator() // Show loading indicator
+          ? Center(child: CircularProgressIndicator()) // Show loading indicator
           : ElevatedButton.icon(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
@@ -36,7 +37,7 @@ class CustomLoginButton extends StatelessWidget {
                 width: 20,
                 height: 20,
               ),
-              label: Text("Log In", style: TextStyle(color: Colors.white)),
+              label: Text(label, style: TextStyle(color: Colors.white)),
             ),
     );
   }

@@ -1,9 +1,9 @@
+//test
 import 'package:get/get.dart';
 import 'package:invoportapp/UI/screens/UserDataScreen.dart';
-import 'package:invoportapp/UI/screens/daitels.dart';
-import 'Model/UserModel.dart';
 import 'UI/screens/Home.dart';
 import 'UI/screens/login.dart';
+import 'Controller/Auth/page-pdf.dart';
 import 'constance/routes.dart';
 
 List<GetPage<dynamic>>? routes = [
@@ -12,8 +12,9 @@ List<GetPage<dynamic>>? routes = [
 
   // Home
   GetPage(name: AppRoute.home, page: () =>  Home()),
+  GetPage(name: AppRoute.page1, page: () =>  UserDataScreen(userModels: [],)),
+  GetPage(page: () =>  PDFViewerPage(), name: AppRoute.pdf),
+
   //UserDataScreen
-
-
 
 ];
