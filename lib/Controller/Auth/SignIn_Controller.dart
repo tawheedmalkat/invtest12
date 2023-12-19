@@ -206,17 +206,17 @@
 //     super.dispose();
 //   }
 // }
+
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:invoportapp/Model/UserModel.dart';
+import '../../UI/screens/pdfpage.dart';
 import '../../constance/api.dart';
 import '../../constance/routes.dart';
 import '../../main.dart';
-import 'package:invoportapp/UI/screens/UserDataScreen.dart';
-import '../../Controller/Auth/page-pdf.dart'; // Add this import statement
+import '../../Controller/Auth/page-pdf.dart';
 
 abstract class SignInController extends GetxController {
   signIn(BuildContext context);
@@ -290,13 +290,12 @@ class SignInControllerImp extends SignInController {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // Get the instance of PdfDataControllerImp
-                          var pdfController = Get.find<PdfDataControllerImp>();
+                          sharedPref?.setString('token', responseData['token']);
+                          var pdfController = Get.put(PdfDataControllerImp());
+                          String url = await pdfController
+                              .pdfDataController('kgrelg443GG^%');
 
-                          // Fetch PDF data after successful login
-                          await pdfController.pdfDataController('1', 'kgrelg443GG^%');
-
-                          Get.offNamed(AppRoute.pdf);
+                          Get.to(PdfPage( url: '${url}',));
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -309,13 +308,16 @@ class SignInControllerImp extends SignInController {
                       SizedBox(width: 20),
                       TextButton(
                         onPressed: () async {
-                          var pdfController = Get.find<PdfDataControllerImp>();
+                          sharedPref?.setString('token', responseData['token']);
+                          var pdfController = Get.put(PdfDataControllerImp());
 
                           // Fetch PDF data after successful login
-                          await pdfController.pdfDataController('1', 'kgrelg443GG^%');
-                          //  sharedPref?.setString('token', responseData['token']);
+                          String url = await pdfController
+                              .pdfDataController('kgrelg443GG^%');
+
+                          Get.to(PdfPage( url: '${url}',));
+
                           //  await postData('1', 'kgrelg443GG^%', context);
-                          Get.offNamed(AppRoute.pdf);
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(

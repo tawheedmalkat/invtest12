@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 import 'UI/screens/Home.dart';
+import 'UI/screens/pdfpage.dart';
 
 SharedPreferences? sharedPref;
 void main()async {
