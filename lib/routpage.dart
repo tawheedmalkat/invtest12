@@ -9,11 +9,11 @@ import 'constance/routes.dart';
 
 List<GetPage<dynamic>>? routes = [
   // Auth
-  GetPage(name: AppRoute.signIn, page: () =>  LogIn()),
-
-  // Home
-  GetPage(name: AppRoute.home, page: () =>  Home()),
-  GetPage(name: AppRoute.page1, page: () =>  UserDataScreen(userModels: [],)),
+  //GetPage(name: AppRoute.signIn, page: () =>  LogIn()),
+  //
+  //   // Home
+  //   GetPage(name: AppRoute.home, page: () =>  Home()),
+  //   GetPage(name: AppRoute.page1, page: () =>  UserDataScreen(userModels: [],)),
   GetPage(name: AppRoute.pdf, page: () =>  PdfPage()),
 
   //UserDataScreen

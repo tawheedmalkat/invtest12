@@ -26,7 +26,6 @@ class PdfDataControllerImp extends PdfDataController {
 
     var client = http.Client();
 
-
     try {
       final response = await client.get(
         Uri.parse('https://dev.invoport.lu/api/pdf.php'),
@@ -46,6 +45,4 @@ class PdfDataControllerImp extends PdfDataController {
       client.close();
     }
   }
-
-
 }
