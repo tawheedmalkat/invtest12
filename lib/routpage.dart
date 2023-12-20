@@ -9,7 +9,7 @@ import 'constance/routes.dart';
 
 List<GetPage<dynamic>>? routes = [
   // Auth
-  GetPage(name: AppRoute.signIn, page: () =>  LogIn()),
+  GetPage(name: AppRoute.signIn, page: () => LogIn()),
   //
   //   // Home
   //   GetPage(name: AppRoute.home, page: () =>  Home()),
@@ -17,5 +17,4 @@ List<GetPage<dynamic>>? routes = [
   //GetPage(name: AppRoute.pdf, page: () =>  PdfPage()),
 
   //UserDataScreen
-
 ];
