@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Model/UserModel.dart';
-import '../../UI/screens/UserDataScreen.dart';
+import '../../UI/screens/Statistics.dart';
 
 abstract class PostDataController extends GetxController {
   postData(String id, String token, BuildContext context);

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../Constance/imgaeasset.dart';
-import '../../Controller/Auth/SignIn_Controller.dart';
 import '../../Controller/Auth/post-data.dart';
 import '../../Model/UserModel.dart';
 import '../../main.dart';
