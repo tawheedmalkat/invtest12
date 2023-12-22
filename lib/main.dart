@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import 'UI/screens/Home.dart';
 import 'UI/screens/pdfpage.dart';
+import 'UI/screens/statistics.dart';
 
 SharedPreferences? sharedPref;
 void main()async {
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-       getPages: routes,
+       // getPages: routes,
+      home: statistics(),
     );
   }
 }
