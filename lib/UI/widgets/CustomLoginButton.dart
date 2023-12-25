@@ -8,7 +8,10 @@ class CustomLoginButton extends StatelessWidget {
   final String label;
 
   const CustomLoginButton(
-      {super.key, required this.onPressed, required this.isLoading,required this.label});
+      {super.key,
+      required this.onPressed,
+      required this.isLoading,
+      required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,11 @@ class CustomLoginButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.01, vertical: 10),
       child: isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ),
+            ) // Show loading indicator
           : ElevatedButton.icon(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(

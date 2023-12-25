@@ -1,15 +1,18 @@
 import '../main.dart';
 
-class AppRoute {
-  // Auth
-  static String signIn =
-      sharedPref?.getString('token') == null ? "/" : "/login";
+final String? storedToken = sharedPref?.getString('token');
+final int? tokenTimestamp = sharedPref?.getInt('tokenTimestamp');
 
-  // Home
-  static String home = sharedPref?.getString('token') == null ? "/home" : "/";
-//
-//   //pag1
-//   static var page1 =sharedPref?.getString('token') == null ? "/page1" : "/";
-//pdf
-// static var pdf =sharedPref?.getString('token') == null ? "/pdf"  :"/";
+final DateTime now = DateTime.now();
+final DateTime expirationDate = DateTime.fromMillisecondsSinceEpoch(tokenTimestamp!).add(Duration(days: 30));
+
+
+class AppRoute {
+  // signIn
+
+  static String? signIn = storedToken != null && tokenTimestamp != null? now.isBefore(expirationDate)? "/login": "/":"/";
+
+  // interface
+  static String? interface = storedToken != null && tokenTimestamp != null? now.isBefore(expirationDate)? "/": "/interface":"/";
+
 }

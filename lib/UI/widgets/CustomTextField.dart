@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final IconData icon;
   final bool isPassword;
   final bool obscureText;
+  final String? Function(String?) valid;
 
   const CustomTextField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     required this.icon,
     required this.isPassword,
     required this.obscureText,
+    required this.valid,
   }) : super(key: key);
 
   @override
@@ -40,56 +42,60 @@ class CustomTextField extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.08, vertical: 10),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.075,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: MediaQuery.of(context).size.width * 0.002,
-                        blurRadius: MediaQuery.of(context).size.width * 0.005,
-                        offset: Offset(0, MediaQuery.of(context).size.width * 0.015),
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: textfieldcontroller,
-                    obscureText: isPassword ? obscureText : false,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: isPassword ? "Enter Strong Password" : "Enter Your Email",
-                      hintStyle: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: MediaQuery.of(context).size.width * 0.028,
-                      ),
-                      border: InputBorder.none,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
-                        child: Icon(icon, color: Colors.blue),
-                      ),
-                      suffixIcon: isPassword
-                          ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
-                        child: IconButton(
-                          onPressed: () {
-                          controller.updateObscure();
-                          },
-                          icon: Icon(
-                            obscureText ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.blue,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.065,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: MediaQuery.of(context).size.width * 0.002,
+                            blurRadius: MediaQuery.of(context).size.width * 0.005,
+                            offset: Offset(0, MediaQuery.of(context).size.width * 0.015),
                           ),
-                        ),
-                      )
-                          : null,
+                        ],
+                      ),
+
                     ),
-                  ),
+                    Padding(
+                      padding:  EdgeInsets.only(top:  MediaQuery.of(context).size.height * 0.01,),
+                      child: TextFormField(
+                        cursorColor: Colors.blue,
+                        validator: valid,
+                        controller: textfieldcontroller,
+                        obscureText: isPassword ? obscureText : false,
+                        decoration: InputDecoration(
+                          hintText:  "Enter Your ${label}" ,
+                          hintStyle: TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize: MediaQuery.of(context).size.width * 0.028,
+                          ),
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
+                            child: Icon(icon, color: Colors.blue),
+                          ),
+                          suffixIcon: isPassword
+                              ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
+                            child: IconButton(
+                              onPressed: () {
+                                controller.updateObscure();
+                              },
+                              icon: Icon(
+                                obscureText ? Icons.visibility : Icons.visibility_off,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          )
+                              : null,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

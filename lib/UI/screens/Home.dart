@@ -12,10 +12,7 @@ class Home extends StatelessWidget {
 
 
   Future<void> _refreshWebView() async {
-    // Reload the WebView content
     await webviewcontroller.reload();
-
-    // Scroll the WebView to the top
     webviewcontroller.scrollTo(0, 0);
   }
 

@@ -41,7 +41,7 @@ dependencies:
   get:
   awesome_dialog:
   flutter_cached_pdfview: ^0.4.2
-  fl_chart: ^0.55.2
+  fl_chart:
 
 dev_dependencies:
   flutter_test:
