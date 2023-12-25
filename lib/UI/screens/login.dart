@@ -63,7 +63,7 @@ class LogIn extends StatelessWidget {
                                 return 'Password is required';
                               }
 
-                              return null; // Return null if the email is valid
+                              return null; // Return null if the email is valid.
                             },
                           ),
                         ],

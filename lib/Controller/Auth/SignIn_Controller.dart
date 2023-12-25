@@ -131,7 +131,7 @@ class SignInControllerImp extends SignInController {
               ),
             ).show();
           } else {
-            // Wait for 10 seconds if the response is not successful
+            // Wait for 10 seconds if the response is not successful.
             // await Future.delayed(Duration(seconds: 10));
 
             isLoading.value = false;

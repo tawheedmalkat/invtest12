@@ -8,11 +8,11 @@ final DateTime expirationDate = DateTime.fromMillisecondsSinceEpoch(tokenTimesta
 
 
 class AppRoute {
-  // signIn
+  // signIn.
 
   static String? signIn = storedToken != null && tokenTimestamp != null? now.isBefore(expirationDate)? "/login": "/":"/";
 
-  // interface
+  // interface.
   static String? interface = storedToken != null && tokenTimestamp != null? now.isBefore(expirationDate)? "/": "/interface":"/";
 
 }

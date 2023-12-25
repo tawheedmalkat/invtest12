@@ -39,7 +39,7 @@ class UserInfoModel {
     return data;
   }
 
-  // Helper method to create a UserModel from the response
+  // Helper method to create a UserModel from the response.
   factory UserInfoModel.fromResponse(Map<String, dynamic> responseData) {
     return UserInfoModel.fromJson(responseData['user']);
   }
